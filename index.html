@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Emoji Status</title>
+    <title>Туберкулёз - Выбор стиля</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * {
@@ -27,26 +27,17 @@
             overflow-x: hidden;
         }
 
-        .background-character {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-25%, -50%);
-            width: 1050px;
-            height: auto;
-            z-index: 0;
-            pointer-events: none;
-        }
+        /* Убран блок .background-character */
 
         .header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             z-index: 1;
             position: relative;
         }
 
         .header h1 {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 700;
             margin-bottom: 8px;
             background: linear-gradient(135deg, #ffffff 0%, #b0b0b0 100%);
@@ -57,7 +48,7 @@
         }
 
         .header p {
-            font-size: 15px;
+            font-size: 14px;
             color: rgba(255, 255, 255, 0.5);
             font-weight: 400;
         }
@@ -67,122 +58,109 @@
             max-width: 380px;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 12px;
             z-index: 1;
             position: relative;
         }
 
         .status-card {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border-radius: 20px;
-            padding: 18px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px) saturate(180%);
+            -webkit-backdrop-filter: blur(15px) saturate(180%);
+            border-radius: 18px;
+            padding: 14px 16px;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             position: relative;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 14px;
         }
 
-        .status-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(147, 51, 234, 0.15) 0%, transparent 100%);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            pointer-events: none;
-        }
-
-        .status-card:hover::before {
-            opacity: 1;
+        .status-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.15);
         }
 
         .status-card:active {
-            transform: scale(0.96);
+            transform: scale(0.98);
         }
 
         .status-card.selected {
-            background: rgba(147, 51, 234, 0.2);
-            border-color: rgba(147, 51, 234, 0.5);
-            box-shadow: 0 8px 32px rgba(147, 51, 234, 0.3),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            background: rgba(147, 51, 234, 0.15);
+            border-color: rgba(147, 51, 234, 0.4);
+            box-shadow: 0 4px 20px rgba(147, 51, 234, 0.2);
         }
 
-        .status-content {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .status-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 16px;
+        /* Стилизация иконок-картинок */
+        .status-icon-wrapper {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            overflow: hidden;
+            flex-shrink: 0;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 30px;
-            background: rgba(147, 51, 234, 0.1);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(147, 51, 234, 0.2);
-            flex-shrink: 0;
-            transition: all 0.3s ease;
         }
 
-        .status-card.selected .status-icon {
-            background: rgba(147, 51, 234, 0.25);
-            border-color: rgba(147, 51, 234, 0.5);
-            transform: scale(1.05);
-            box-shadow: 0 4px 16px rgba(147, 51, 234, 0.3);
+        .status-icon-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
 
         .status-info {
             flex: 1;
+            min-width: 0; /* Для корректного обрезания текста */
         }
 
         .status-name {
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 600;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
             color: #ffffff;
-            letter-spacing: -0.3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .status-description {
-            font-size: 13px;
-            color: rgba(255, 255, 255, 0.45);
-            line-height: 1.4;
-            font-weight: 400;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            line-height: 1.3;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .status-indicator {
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
-            background: rgba(147, 51, 234, 0.15);
-            border: 2px solid rgba(147, 51, 234, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
             flex-shrink: 0;
         }
 
         .status-card.selected .status-indicator {
             background: #9333EA;
             border-color: #9333EA;
-            box-shadow: 0 4px 12px rgba(147, 51, 234, 0.5);
+            box-shadow: 0 0 10px rgba(147, 51, 234, 0.5);
         }
 
         .status-indicator svg {
-            width: 14px;
-            height: 14px;
+            width: 12px;
+            height: 12px;
             fill: none;
             stroke: rgba(255, 255, 255, 0.3);
             stroke-width: 3;
@@ -199,37 +177,17 @@
             body {
                 padding: 20px 16px;
             }
-
-            .header h1 {
-                font-size: 26px;
-            }
-
-            .header p {
-                font-size: 14px;
-            }
-
-            .background-character {
-                width: 500px;
-            }
-
-            .status-icon {
-                width: 52px;
-                height: 52px;
-                font-size: 28px;
-            }
-
-            .status-name {
-                font-size: 16px;
-            }
-
-            .status-description {
-                font-size: 12px;
+            
+            .status-icon-wrapper {
+                width: 45px;
+                height: 45px;
             }
         }
     </style>
 </head>
 <body>
-    <img src="chr.png" alt="" class="background-character">
+
+    <!-- Фоновая картинка удалена -->
 
     <div class="header">
         <h1>Выберите статус</h1>
@@ -237,50 +195,57 @@
     </div>
 
     <div class="statuses-container">
-        <div class="status-card" data-status="fire" data-emoji="🔥">
-            <div class="status-content">
-                <div class="status-icon">🔥</div>
-                <div class="status-info">
-                    <div class="status-name">Огонь</div>
-                    <div class="status-description">Энергия, страсть и уверенность</div>
-                </div>
-                <div class="status-indicator">
-                    <svg viewBox="0 0 24 24">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                </div>
+        
+        <!-- Статус 1: Огонь (заменим на ваш первый GIF или оставим старый? 
+             Вы просили заменить огонь/кристалл/луна на гиф/фото из списка. 
+             Ниже приведены ваши новые варианты. Если нужно оставить старые - добавьте их обратно) -->
+        
+        <div class="status-card" data-status="charm" data-id="YOUR_ID_HERE_1">
+            <div class="status-icon-wrapper">
+                <img src="https://i.gifer.com/embedded/download/PsE.gif" alt="Charm" class="status-icon-img">
+            </div>
+            <div class="status-info">
+                <div class="status-name">Очарование</div>
+                <div class="status-description">Стань неотразимой</div>
+            </div>
+            <div class="status-indicator">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
             </div>
         </div>
 
-        <div class="status-card" data-status="crystal" data-emoji="💎">
-            <div class="status-content">
-                <div class="status-icon">💎</div>
-                <div class="status-info">
-                    <div class="status-name">Кристалл</div>
-                    <div class="status-description">Ценность, уникальность и стиль</div>
-                </div>
-                <div class="status-indicator">
-                    <svg viewBox="0 0 24 24">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                </div>
+        <div class="status-card" data-status="strategy" data-id="YOUR_ID_HERE_2">
+            <div class="status-icon-wrapper">
+                <img src="https://media1.tenor.com/m/osKwWYJZjk8AAAAd/lelouch.gif" alt="Strategy" class="status-icon-img">
+            </div>
+            <div class="status-info">
+                <div class="status-name">Стратегия</div>
+                <div class="status-description">Будь умнее всех</div>
+            </div>
+            <div class="status-indicator">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
             </div>
         </div>
 
-        <div class="status-card" data-status="moon" data-emoji="🌙">
-            <div class="status-content">
-                <div class="status-icon">🌙</div>
-                <div class="status-info">
-                    <div class="status-name">Луна</div>
-                    <div class="status-description">Спокойствие, тайна и гармония</div>
-                </div>
-                <div class="status-indicator">
-                    <svg viewBox="0 0 24 24">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                </div>
+        <div class="status-card" data-status="charisma" data-id="YOUR_ID_HERE_3">
+            <div class="status-icon-wrapper">
+                <img src="https://avatars.akamai.steamstatic.com/2ac4b72587acde2e444f8ad9a89622db13000956_full.jpg" alt="Charisma" class="status-icon-img">
+            </div>
+            <div class="status-info">
+                <div class="status-name">Харизма</div>
+                <div class="status-description">Максимальная уверенность</div>
+            </div>
+            <div class="status-indicator">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
             </div>
         </div>
+
+        <!-- Пример того, как вернуть старые статусы, если они тоже нужны -->
+        <!--
+        <div class="status-card" data-status="fire" data-id="5287670934029761167">
+            ... старая структура ...
+        </div>
+        -->
+
     </div>
 
 <script>
@@ -288,38 +253,59 @@ const tg = window.Telegram.WebApp;
 tg.ready();
 tg.expand();
 
-const STATUS_IDS = {
-    fire: "5287670934029761167",
-    crystal: "5303406233913420508",
-    moon: "5287547947641241756"
+// ВАЖНО: Замените значения в объекте STATUS_MAP на реальные ID эмодзи-статусов из вашего бота/Telegram.
+// Поскольку у вас были ссылки на внешние картинки, а не встроенные эмодзи Telegram, 
+// вам нужно либо создать свои кастомные эмодзи в TG Premium, либо использовать существующие ID.
+// Сейчас здесь заглушки. Вам нужно подставить правильные ID от Telegram Bot API.
+const STATUS_MAP = {
+    charm: "REPLACE_WITH_REAL_EMOJI_STATUS_ID_1", 
+    strategy: "REPLACE_WITH_REAL_EMOJI_STATUS_ID_2",
+    charisma: "REPLACE_WITH_REAL_EMOJI_STATUS_ID_3"
 };
 
 const cards = document.querySelectorAll(".status-card");
 
 cards.forEach(card => {
     card.addEventListener("click", () => {
-        const statusId = STATUS_IDS[card.dataset.status];
-
-        if (!statusId || !tg.isVersionAtLeast("8.0")) {
-            tg.showAlert("Эта функция недоступна. Обновите Telegram.");
+        const statusKey = card.dataset.status;
+        // Берем ID напрямую из data-атрибута, чтобы можно было менять его без JS
+        let statusId = card.dataset.id; 
+        
+        // Логика проверки версии и доступа
+        if (!tg.isVersionAtLeast("8.0")) {
+            tg.showAlert("Требуется обновление Telegram до версии 8.0+");
             return;
         }
 
+        // Визуальный выбор
         cards.forEach(item => item.classList.remove("selected"));
         card.classList.add("selected");
+
+        // Проверка, есть ли вообще ID (если вы забыли заменить заглушку)
+        if (!statusId || statusId.startsWith("REPLACE") || statusId === "") {
+             tg.showAlert("Ошибка конфигурации: Не указан ID статуса.");
+             return;
+        }
 
         tg.requestEmojiStatusAccess(granted => {
             if (!granted) {
                 tg.showAlert("Доступ не предоставлен.");
+                // Возвращаем визуал назад, если отказали
+                card.classList.remove("selected");
                 return;
             }
 
             tg.setEmojiStatus(statusId, { duration: 86400 }, success => {
-                tg.showAlert(
-                    success
-                        ? "Статус успешно установлен!"
-                        : "Не удалось установить статус."
-                );
+                if (success) {
+                    tg.showPopup({
+                        title: "Готово!",
+                        message: "Статус успешно установлен.",
+                        buttons: [{type: "ok"}]
+                    });
+                } else {
+                    tg.showAlert("Не удалось установить статус. Попробуйте позже.");
+                    card.classList.remove("selected");
+                }
             });
         });
     });
